@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP Creator Profile | Link-in-Bio</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            purple: '#9d4edd',
+                            neon: '#e0aaff',
+                            pink: '#ff007f',
+                            dark: '#0f0c1b',
+                            card: '#1a1528',
+                            hover: '#251e38'
+                        }
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 2s infinite',
+                        'float': 'float 4s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 15px rgba(224, 170, 255, 0.4)' },
+                            '50%': { boxShadow: '0 0 25px rgba(255, 0, 127, 0.7)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-6px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b0813;
+            color: #f1f1f1;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0813;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2b223d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9d4edd;
+        }
+        .glass-panel {
+            background: rgba(26, 21, 40, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(224, 170, 255, 0.12);
+        }
+        .glass-button {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-button:hover {
+            background: rgba(157, 78, 221, 0.2);
+            border-color: rgba(224, 170, 255, 0.4);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between relative overflow-x-hidden selection:bg-brand-pink selection:text-white">
+
+    <!-- Ambient Background Glows -->
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-lg h-[400px] bg-gradient-to-b from-brand-purple/20 via-brand-pink/10 to-transparent blur-3xl pointer-events-none -z-10"></div>
+    <div class="fixed bottom-0 right-0 w-80 h-80 bg-brand-pink/10 blur-3xl pointer-events-none -z-10"></div>
+    <div class="fixed top-1/3 left-0 w-80 h-80 bg-brand-purple/10 blur-3xl pointer-events-none -z-10"></div>
+
+    <!-- ================= 18+ AGE VERIFICATION MODAL ================= -->
+    <div id="age-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md transition-opacity duration-300">
+        <div class="glass-panel w-full max-w-md p-8 rounded-3xl text-center shadow-2xl border border-brand-purple/30 animate-float">
+            <!-- Icon -->
+            <div class="w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-tr from-brand-pink to-brand-purple flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-brand-pink/30">
+                18+
+            </div>
+            
+            <h2 class="text-2xl font-extrabold text-white mb-2 tracking-wide">Age Verification Required</h2>
+            <p class="text-gray-300 text-sm mb-6 leading-relaxed">
+                This profile contains adult-oriented material, explicit preview media, and links. You must be at least 18 years old (or legal age in your jurisdiction) to enter.
+            </p>
+
+            <div class="space-y-3">
+                <button id="btn-enter" onclick="confirmAge()" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-brand-pink to-brand-purple hover:from-brand-purple hover:to-brand-pink text-white font-bold text-base shadow-lg shadow-brand-pink/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
+                    I am 18 or older - Enter Profile
+                </button>
+                <button onclick="leaveSite()" class="w-full py-3 px-6 rounded-2xl glass-button text-gray-400 hover:text-white font-medium text-sm transition-all">
+                    I am under 18 - Leave
+                </button>
+            </div>
+
+            <p class="text-xs text-gray-500 mt-6 flex items-center justify-center gap-1">
+                <i class="fa-solid fa-shield-halved text-brand-purple"></i> 256-Bit Encrypted & Compliant Profile
+            </p>
+        </div>
+    </div>
+
+    <!-- ================= MAIN CONTAINER ================= -->
+    <main class="w-full max-w-md min-h-screen px-4 py-8 flex flex-col items-center">
+
+        <!-- PROFILE HEADER -->
+        <header class="w-full flex flex-col items-center text-center mt-4">
+            
+            <!-- Avatar with Glowing Ring and Badge -->
+            <div class="relative group cursor-pointer mb-4">
+                <div class="absolute -inset-1 rounded-full bg-gradient-to-r from-brand-pink via-brand-purple to-brand-neon rounded-full blur opacity-75 group-hover:opacity-100 transition duration-500 animate-pulse-glow"></div>
+                
+                <img src="propic.jpg" 
+                     alt="Profile Avatar" 
+                     onerror="this.src='https://asiafilm.org/4/6e85db21d3dee1d2705ea845ef733ab2'"
+                     class="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-2 border-white/20 shadow-2xl">
+                
+                <!-- Status Badge -->
+                <div class="absolute bottom-1 right-1 bg-brand-dark/90 backdrop-blur-md border border-emerald-500/50 text-emerald-400 text-xs px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-md">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span class="font-semibold text-[11px] tracking-wider uppercase">Live Now</span>
+                </div>
+            </div>
+
+            <!-- Name and Verification -->
+            <div class="flex items-center gap-2 mb-1">
+                <h1 class="text-2xl font-extrabold text-white tracking-tight">Catherine Williams</h1>
+                <span class="text-brand-neon text-lg" title="Verified Creator">
+                    <i class="fa-solid fa-circle-check"></i>
+                </span>
+            </div>
+
+            <!-- Username / Handle -->
+            <p class="text-brand-purple text-sm font-medium mb-3">@catherine_williams</p>
+
+            <!-- Bio -->
+            <p class="text-gray-300 text-sm max-w-xs leading-relaxed mb-5">
+                Model & Digital Content Creator ✨ Exclusive daily photos, uncensored sets & custom 1-on-1 video chats below. 💋
+            </p>
+
+            <!-- Quick Metrics Header Tag -->
+            <div class="flex items-center gap-4 bg-brand-card/80 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/5 text-xs text-gray-300 mb-6">
+                <div><strong class="text-white">647K+</strong> Subscribers</div>
+                <div class="w-1 h-1 rounded-full bg-gray-600"></div>
+                <div><strong class="text-white">Daily</strong> Drops</div>
+                <div class="w-1 h-1 rounded-full bg-gray-600"></div>
+                <div><strong class="text-white">Top 5%</strong></div>
+            </div>
+        </header>
+
+        <!-- ================= PRIMARY FEATURED CTA LINK ================= -->
+        <section class="w-full mb-6">
+            <a href="https://asiafilm.org/4/6e85db21d3dee1d2705ea845ef733ab2" target="_blank" rel="noopener text" class="group relative w-full p-4 rounded-2xl bg-gradient-to-r from-brand-pink via-brand-purple to-purple-800 flex items-center justify-between shadow-xl shadow-brand-pink/20 hover:shadow-brand-pink/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden border border-white/20">
+                <!-- Shimmer Effect -->
+                <div class="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 ease-in-out"></div>
+                
+                <div class="flex items-center gap-3.5 relative z-10">
+                    <div class="w-11 h-11 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white text-xl">
+                        <i class="fa-solid fa-tower-broadcast" style="color: rgb(99, 230, 190);"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="text-xs uppercase font-extrabold tracking-wider text-pink-200 block">LIMITED CAPACITY</span>
+                        <span class="text-base font-bold text-white block">Join My Private Live Stream </span>
+                    </div>
+                </div>
+
+                <div class="relative z-10 bg-white text-brand-dark px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 shadow-md group-hover:bg-brand-neon transition-colors">
+                    Join Now
+                </div>
+            </a>
+        </section>
+
+
+        <section class="w-full mb-6">
+            <a href="https://auctionr.org/4/2e1cef360ab85801af6f4a06d4428cff" target="_blank" rel="noopener text" class="group relative w-full p-4 rounded-2xl bg-gradient-to-r from-brand-pink via-brand-purple to-purple-800 flex items-center justify-between shadow-xl shadow-brand-pink/20 hover:shadow-brand-pink/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden border border-white/20">
+                <!-- Shimmer Effect -->
+                <div class="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 ease-in-out"></div>
+                
+                <div class="flex items-center gap-3.5 relative z-10">
+                    <div class="w-11 h-11 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white text-xl">
+                        <i class="fa-solid fa-video" style="color: rgb(99, 230, 190);"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="text-xs uppercase font-extrabold tracking-wider text-pink-200 block">PERSONAL CONNECT</span>
+                        <span class="text-base font-bold text-white block">1-on-1 Video Call With Me💋</span>
+                    </div>
+                </div>
+
+                <div class="relative z-10 bg-white text-brand-dark px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 shadow-md group-hover:bg-brand-neon transition-colors">
+                    Call Now
+                </div>
+            </a>
+        </section>
+
+
+        <section class="w-full mb-6">
+            <a href="https://auctionr.org/4/280c02e704f06c54c99d87068d93a577" target="_blank" rel="noopener text" class="group relative w-full p-4 rounded-2xl bg-gradient-to-r from-brand-pink via-brand-purple to-purple-800 flex items-center justify-between shadow-xl shadow-brand-pink/20 hover:shadow-brand-pink/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] overflow-hidden border border-white/20">
+                <!-- Shimmer Effect -->
+                <div class="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 ease-in-out"></div>
+                
+                <div class="flex items-center gap-3.5 relative z-10">
+                    <div class="w-11 h-11 rounded-xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white text-xl">
+                        <i class="fa-solid fa-comments" style="color: rgb(99, 230, 190);"></i>
+                    </div>
+                    <div class="text-left">
+                        <span class="text-xs uppercase font-extrabold tracking-wider text-pink-200 block">ACTIVE NOW • 15 ONLINE</span>
+                        <span class="text-base font-bold text-white block">Unlock Exclusive Chatroom</span>
+                    </div>
+                </div>
+
+                <div class="relative z-10 bg-white text-brand-dark px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 shadow-md group-hover:bg-brand-neon transition-colors">
+                    Enter Room
+                </div>
+            </a>
+        </section>
+
+
+        <!-- ================= LINKS CONTAINER ================= -->
+        <section class="w-full space-y-3 mb-8">
+
+            <!-- Exclusive Store / Direct Video Link -->
+            <a href="#teaser-grid" class="glass-button w-full p-3.5 rounded-2xl flex items-center justify-between group">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-pink-500/10 flex items-center justify-center text-brand-pink text-lg group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-film"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="font-bold text-white text-sm">PPV Video Store & Previews</p>
+                        <p class="text-xs text-gray-400">Unlock individual full-length clips</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-chevron-down text-xs text-gray-400 group-hover:text-brand-pink transition-colors"></i>
+            </a>
+
+            <!-- Social Media - Instagram -->
+            <a href="https://auctionr.org/4/17807faa68cf85ef0ab04aa42709ea51" target="_blank" rel="noopener" class="glass-button w-full p-3.5 rounded-2xl flex items-center justify-between group">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-pink-600/10 flex items-center justify-center text-pink-400 text-lg group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="font-bold text-white text-sm">Instagram</p>
+                        <p class="text-xs text-gray-400">Behind the scenes & lifestyle</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 group-hover:text-white transition-colors"></i>
+            </a>
+
+        <!-- ================= TEASER MEDIA GALLERY (GRID WITH BLUR OVERLAY) ================= -->
+        <section id="teaser-grid" class="w-full mb-8">
+            <div class="flex items-center justify-between mb-4 px-1">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-lock text-brand-pink"></i> Exclusive Preview Vault
+                </h3>
+                <span class="text-xs text-brand-purple font-semibold">Updated Today</span>
+            </div>
+
+            <!-- Grid Grid Grid -->
+            <div class="grid grid-cols-3 gap-2.5">
+                
+                <!-- Media Item 1 -->
+                <div onclick="openPreview('Private Photoshoot Preview', 'Woman_posing_in_underwear_95772b70_2K.jpg')" class="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group border border-white/10">
+                    <img src="Woman_posing_in_underwear_95772b70_2K.jpg" 
+                         onerror="this.src='https://auctionr.org/4/b24aa05bbf352c836970a048673ad790'"
+                         class="w-full h-full object-cover filter blur-[6px] group-hover:blur-[3px] transition-all duration-300 scale-105 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center p-1">
+                        <i class="fa-solid fa-lock text-white/90 text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-white bg-brand-pink/80 px-2 py-0.5 rounded-full">Photo Set</span>
+                    </div>
+                </div>
+
+                <!-- Media Item 2 -->
+                <div onclick="openPreview('Exclusive Video Clip', 'Woman_wearing_bra_and_panties_08e1bb1a_2K.jpg')" class="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group border border-white/10">
+                    <img src="Woman_wearing_bra_and_panties_08e1bb1a_2K.jpg" 
+                         onerror="this.src='https://asiafilm.org/4/6e85db21d3dee1d2705ea845ef733ab2'"
+                         class="w-full h-full object-cover filter blur-[8px] group-hover:blur-[4px] transition-all duration-300 scale-105 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center p-1">
+                        <i class="fa-solid fa-play text-white/90 text-xl mb-1 group-hover:scale-125 transition-transform"></i>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-white bg-brand-purple/80 px-2 py-0.5 rounded-full">4K Video</span>
+                    </div>
+                </div>
+
+                <!-- Media Item 3 -->
+                <div onclick="openPreview('Behind the Scenes Lock', 'Woman_wearing_underwear_3ead1f40_2K.jpg')" class="relative aspect-square rounded-2xl overflow-hidden cursor-pointer group border border-white/10">
+                    <img src="Woman_wearing_underwear_3ead1f40_2K.jpg" 
+                         onerror="this.src='https://auctionr.org/4/c15c2e3fb041cd8b996d95a2b17e4b8e'"
+                         class="w-full h-full object-cover filter blur-[7px] group-hover:blur-[3px] transition-all duration-300 scale-105 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-center p-1">
+                        <i class="fa-solid fa-lock text-white/90 text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-white bg-brand-pink/80 px-2 py-0.5 rounded-full">Uncensored</span>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="text-center text-xs text-gray-400 mt-3">
+                Tap any preview to request unlock or join VIP to view full collection.
+            </p>
+        </section>
+
+        <!-- ================= PREVIEW / UNLOCK MODAL ================= -->
+        <div id="preview-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+            <div class="glass-panel w-full max-w-sm rounded-3xl overflow-hidden text-center p-6 border border-brand-purple/40 relative animate-float">
+                <button onclick="closePreview()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 text-gray-300 hover:text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <div class="relative w-full h-52 rounded-2xl overflow-hidden mb-4 border border-white/10">
+                    <img id="preview-img" src="" class="w-full h-full object-cover filter blur-sm">
+                    <div class="absolute inset-0 bg-black/50 flex flex-col items-center justify-center p-4">
+                        <div class="w-12 h-12 rounded-full bg-brand-pink/80 text-white flex items-center justify-center text-xl mb-2 shadow-lg">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <span class="text-xs font-bold text-white uppercase tracking-widest">Locked VIP Content</span>
+                    </div>
+                </div>
+
+                <h4 id="preview-title" class="text-lg font-bold text-white mb-2">Exclusive Content Preview</h4>
+                <p class="text-xs text-gray-300 mb-5">
+                    Unlock full access to this post and over 400+ HD photos and videos instantly on my VIP page.
+                </p>
+
+                <a href="https://auctionr.org/4/17807faa68cf85ef0ab04aa42709ea51" target="_blank" rel="noopener" class="w-full py-3 px-6 rounded-2xl bg-gradient-to-r from-brand-pink to-brand-purple text-white font-bold text-sm block shadow-lg shadow-brand-pink/30 hover:opacity-90 transition-opacity">
+                    Unlock Full Post
+                </a>
+            </div>
+        </div>
+
+        <!-- ================= FOOTER / COMPLIANCE ================= -->
+        <footer class="w-full text-center mt-auto pt-6 pb-2 border-t border-white/5 space-y-3">
+            
+            <p class="text-[11px] text-gray-500 max-w-xs mx-auto leading-normal">
+                This website contains adult content. All models depicted are 18 years of age or older. 
+                &copy; <span id="year"></span> Catherine Williams. All rights reserved.
+            </p>
+        </footer>
+
+    </main>
+
+    <!-- ================= JAVASCRIPT ================= -->
+    <script>
+        // Set dynamic copyright year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Check age verification status from localStorage
+        window.onload = function() {
+            const isVerified = localStorage.getItem('ageVerified');
+            if (isVerified === 'true') {
+                document.getElementById('age-modal').classList.add('hidden');
+            }
+        };
+
+        // User confirms 18+ age
+        function confirmAge() {
+            localStorage.setItem('ageVerified', 'true');
+            const modal = document.getElementById('age-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // User declines age verification
+        function leaveSite() {
+            window.location.href = "https://www.google.com";
+        }
+
+        // Open Teaser Image Preview Modal
+        function openPreview(title, imageSrc) {
+            document.getElementById('preview-title').textContent = title;
+            document.getElementById('preview-img').src = imageSrc;
+            const previewModal = document.getElementById('preview-modal');
+            previewModal.classList.remove('hidden');
+        }
+
+        // Close Teaser Image Preview Modal
+        function closePreview() {
+            document.getElementById('preview-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
